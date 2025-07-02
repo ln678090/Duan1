@@ -1,6 +1,0 @@
-git checkout -b feature/MinhAn
-git push origin feature/MinhAn
-  git checkout -b feature/Trungkien
-git push origin feature/Trungkien
-git checkout -b feature/ThanhAn
-git push origin feature/ThanhAn
