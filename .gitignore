@@ -1,0 +1,14 @@
+# Bỏ qua thư mục build
+/target/
+/build/
+/out/
+
+# Bỏ qua file nặng hoặc không cần track
+*.zip
+*.gif
+*.mp4
+
+# Bỏ qua file hệ thống và môi trường
+/.idea/
+/.vscode/
+*.log
