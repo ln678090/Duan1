@@ -1,0 +1,21 @@
+# Thư mục build
+target
+
+
+
+# File log và tạm
+.git
+*.log
+*.tmp
+
+# File cấu hình IDE
+.idea/
+.vscode/
+
+# File hệ thống
+.DS_Store
+Thumbs.db
+
+# File nhạy cảm
+*.env
+config.ini
