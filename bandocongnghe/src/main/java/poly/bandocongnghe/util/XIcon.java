@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 
 public class XIcon {
     public static void XIconebylam(JLabel label, String Path) {
-        ImageIcon icon = new ImageIcon(XIcon.class.getResource("/photo/" + Path));
+        ImageIcon icon = new ImageIcon(XIcon.class.getResource("/sanpham/" + Path));
         Image img = icon.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
         label.setText("");
         label.setIcon(new ImageIcon(img));
