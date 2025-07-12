@@ -4,7 +4,7 @@
  */
 package poly.bandocongnghe.entity;
 
-import java.math.BigDecimal;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,11 +18,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class Product {
-    private String id,Name;
-   private BigDecimal import_price,
-            market_price,
-            sale_price;
-   private int discount;
- private String category_id,brand_id;
+public class Cart {
+  private String Username;
+    private      Date    Createat;
+private int Id;
+   private      int   Status;
 }

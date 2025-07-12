@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import poly.bandocongnghe.view.ViewProductJPanel;
+import poly.bandocongnghe.view.viewCartJpanel;
 
 
 /**
@@ -17,9 +18,17 @@ import poly.bandocongnghe.view.ViewProductJPanel;
 public interface hienpnanel {
     default void showviewproduct(JPanel panel){
     panel.removeAll();
-        ViewProductJPanel ViewProductJPanel=new ViewProductJPanel();
-        panel.add(ViewProductJPanel,BorderLayout.CENTER);
-        ViewProductJPanel.setVisible(true);
+        ViewProductJPanel view=new ViewProductJPanel();
+        panel.add(view,BorderLayout.CENTER);
+        view.setVisible(true);
+         panel.revalidate();
+        panel.repaint();
+    }
+    default  void viewCart(JPanel panel){
+      panel.removeAll();
+        viewCartJpanel view=new viewCartJpanel();
+        panel.add(view,BorderLayout.CENTER);
+        view.setVisible(true);
          panel.revalidate();
         panel.repaint();
     }

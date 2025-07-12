@@ -18,11 +18,21 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class Product {
-    private String id,Name;
-   private BigDecimal import_price,
-            market_price,
-            sale_price;
-   private int discount;
- private String category_id,brand_id;
+public class Cart_item {
+  private int CartId ;
+   private int Status  ;
+/*
+0	Đã thêm vào giỏ  chưa chọn thanh toán
+1	Đã chọn để thanh toán
+2	Đã thanh toán thành công
+3	Đã huỷ (người dùng bỏ qua hoặc hệ thống tự huỷ nếu quá hạn) */
+ 
+
+private String Product_id ;
+ private int   Quantity   ;
+ private BigDecimal UnitPrice ;
+ 
+ 
+ private BigDecimal sale_price;
+ private String  name;
 }

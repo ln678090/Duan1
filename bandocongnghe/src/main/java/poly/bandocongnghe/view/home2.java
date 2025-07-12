@@ -50,6 +50,7 @@ public class home2 extends javax.swing.JFrame implements hienpnanel{
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         pannelchucnang = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -86,7 +87,7 @@ public class home2 extends javax.swing.JFrame implements hienpnanel{
         jPanel2.add(buttonx, new org.netbeans.lib.awtextra.AbsoluteConstraints(1630, 0, 70, 30));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icontk.png"))); // NOI18N
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1130, 40, -1, -1));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1560, 40, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/menu_first.png"))); // NOI18N
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -149,7 +150,15 @@ public class home2 extends javax.swing.JFrame implements hienpnanel{
 
         pannelchucnang.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         pannelchucnang.setLayout(new java.awt.BorderLayout());
-        jPanel2.add(pannelchucnang, new org.netbeans.lib.awtextra.AbsoluteConstraints(31, 90, 1600, 790));
+        jPanel2.add(pannelchucnang, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 90, 1680, 820));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icongiohang.png"))); // NOI18N
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(1460, 0, 90, 90));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -206,6 +215,11 @@ public class home2 extends javax.swing.JFrame implements hienpnanel{
         }
     }//GEN-LAST:event_jLabel1MouseClicked
 
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        // TODO add your handling code here:
+        viewCart(pannelchucnang);
+    }//GEN-LAST:event_jLabel7MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -250,6 +264,7 @@ public class home2 extends javax.swing.JFrame implements hienpnanel{
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel menupanel;
     private javax.swing.JPanel pannelchucnang;

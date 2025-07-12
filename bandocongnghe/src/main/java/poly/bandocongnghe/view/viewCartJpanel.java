@@ -1,0 +1,338 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
+package poly.bandocongnghe.view;
+
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.List;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import poly.bandocongnghe.dao.CartDAO;
+import poly.bandocongnghe.dao.Cart_itemDAO;
+import poly.bandocongnghe.dao.ProductDAO;
+import poly.bandocongnghe.dao.Product_detailDAO;
+import poly.bandocongnghe.dao.impl.CartDAOImpl;
+import poly.bandocongnghe.dao.impl.Cart_itemDAOImpl;
+import poly.bandocongnghe.dao.impl.ProductDAOImpl;
+import poly.bandocongnghe.dao.impl.Product_detailDAOImpl;
+import poly.bandocongnghe.entity.Cart;
+import poly.bandocongnghe.entity.Cart_item;
+import poly.bandocongnghe.util.XAuth;
+import poly.bandocongnghe.util.XDialog;
+
+/**
+ *
+ * @author lam
+ */
+public class viewCartJpanel extends javax.swing.JPanel {
+
+    /**
+     * Creates new form viewCartJpanel
+     */
+    CartDAO cartDAO=new CartDAOImpl();
+    Cart_itemDAO cart_itemDAO=new Cart_itemDAOImpl();
+    ProductDAO productDAO=new  ProductDAOImpl();
+    Product_detailDAO product_detailDAO=new Product_detailDAOImpl();
+    Cart in=cartDAO.findActiveCartByUsername(XAuth.user.getUsername());
+    List<Cart_item> cart_items=List.of();
+    int soluong=0;
+    int row;
+    public viewCartJpanel() {
+        initComponents();
+        open();
+    }
+    private void  open(){
+    filltotablecard_item();
+    sukien();
+    txtsoluong.setEditable(false);
+    txttongtien.setEditable(false);
+    }
+    private void giurow(){
+    int oldrow=row;
+    filltotablecard_item();
+    if(oldrow>=0 && tablecart.getRowCount()>oldrow){
+    tablecart.setRowSelectionInterval(oldrow, oldrow);
+    row=oldrow;
+    }else{row=-1;}
+    }
+    private void thaysoluong(int soluong){
+     Cart in=cartDAO.findActiveCartByUsername(XAuth.user.getUsername());
+      
+     String productid = (String) tablecart.getModel().getValueAt(row, 1); 
+     
+     cart_itemDAO.updateQuantity(in.getId(),productid, soluong);
+      giurow();
+    }
+    private void sukien(){
+
+        
+        
+    tablecart.getModel().addTableModelListener(e -> {
+        if(e.getType()==TableModelEvent.UPDATE){
+    row = e.getFirstRow();
+    if(row>=0&& tablecart.getRowCount()>row){
+     
+   Boolean sleet = (Boolean) tablecart.getModel().getValueAt(row, 0); 
+    String productid = (String) tablecart.getModel().getValueAt(row, 1); 
+    Cart in=cartDAO.findActiveCartByUsername(XAuth.user.getUsername());
+
+if(sleet==true){
+    
+cart_itemDAO.updateStatus(in.getId(), productid,1 );
+    
+}else{
+ 
+cart_itemDAO.updateStatus(in.getId(), productid,0 );
+
+}
+}}
+}
+    );
+    }
+private void filltotablecard_item (){
+   cart_items =cart_itemDAO.hientblecaritem();
+   
+     DefaultTableModel model = (DefaultTableModel) tablecart.getModel();
+        model.setRowCount(0);
+       cart_items.forEach((t) -> {
+        
+BigDecimal amt=BigDecimal.valueOf(t.getQuantity()).multiply(t.getSale_price());
+       Object val[]={
+        t.getStatus()==1,                         //0
+           t.getProduct_id(),            //1
+           t.getName(),                 //2
+           t.getSale_price(),            //3
+            t.getQuantity(),            //4 
+           String.format("$%.2f", amt)  //5
+       };
+       model.addRow(val);
+       });
+       for (int i = 0; i < tablecart.getColumnCount(); i++) {
+        
+    
+           if("ProductID".equals(tablecart.getColumnName(i))){
+           TableColumn hiden=tablecart.getColumnModel().getColumn(1);
+           tablecart.removeColumn(hiden);
+       }}
+       double tong=0;
+       for (Cart_item t : cart_items) {
+           BigDecimal amt=BigDecimal.valueOf(t.getQuantity()).multiply(t.getSale_price());
+           double amtt=amt.doubleValue();
+           
+        tong+=amtt;
+    }
+       DecimalFormat df = new DecimalFormat("#,##0.00");
+       txttongtien.setText(String.valueOf("$"+df.format(tong)));
+}
+private void xoa(){ 
+    if (XDialog.confirm("Bạn thực sự muốn xóa các mục chọn?")) {
+            for (int i = 0; i < tablecart.getRowCount(); i++) {
+                if ((Boolean) tablecart.getValueAt(i, 0)) {
+                    Cart in=cartDAO.findActiveCartByUsername(XAuth.user.getUsername());
+                    cart_itemDAO.deleteItem(in.getId(), cart_items.get(i).getProduct_id());
+                  //  dao.deleteById(cart_items.get(i).getProduct_id());
+                     XDialog.alert("xóa thành công");
+                }
+            }
+            this.filltotablecard_item();
+        }
+
+}
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablecart = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txtsoluong = new javax.swing.JTextPane();
+        bttang = new javax.swing.JButton();
+        btgiam = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txttongtien = new javax.swing.JTextPane();
+        jLabel2 = new javax.swing.JLabel();
+
+        tablecart.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "", "ProductID", "Tên Sản Phẩm", "Giá cả", "Số lượng", "Thành tiền"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablecart.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablecartMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablecart);
+        if (tablecart.getColumnModel().getColumnCount() > 0) {
+            tablecart.getColumnModel().getColumn(0).setResizable(false);
+            tablecart.getColumnModel().getColumn(1).setResizable(false);
+            tablecart.getColumnModel().getColumn(2).setResizable(false);
+            tablecart.getColumnModel().getColumn(3).setResizable(false);
+            tablecart.getColumnModel().getColumn(4).setResizable(false);
+            tablecart.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        jButton1.setText("Thanh toán");
+
+        jButton2.setText("Xóa Khỏi giỏ hàng");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Số lượng");
+
+        jScrollPane2.setViewportView(txtsoluong);
+
+        bttang.setText("^");
+        bttang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttangActionPerformed(evt);
+            }
+        });
+
+        btgiam.setText("v");
+        btgiam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btgiamActionPerformed(evt);
+            }
+        });
+
+        jScrollPane3.setViewportView(txttongtien);
+
+        jLabel2.setText("Tổng");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addGap(3, 3, 3)
+                        .addComponent(btgiam)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(bttang)
+                        .addGap(65, 65, 65)
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 811, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(865, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 689, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2)
+                            .addComponent(jLabel1)
+                            .addComponent(btgiam))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(bttang)
+                            .addComponent(jButton1)
+                            .addComponent(jLabel2)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(94, Short.MAX_VALUE))
+        );
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void tablecartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablecartMouseClicked
+        // TODO add your handling code here:
+         if (evt.getClickCount() == 2) {
+           
+        
+        row=tablecart.getSelectedRow();
+              System.out.println("rowclik"+row);
+        if(row>=0){
+            Object vaObject=tablecart.getModel().getValueAt(row, 4);
+        // jSpsoluong.setValue(vaObject);
+        txtsoluong.setText(String.valueOf( vaObject));
+        }
+         }
+    }//GEN-LAST:event_tablecartMouseClicked
+
+    private void btgiamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btgiamActionPerformed
+        // TODO add your handling code here:
+        if(!txtsoluong.getText().isEmpty()){
+      soluong=  Integer.valueOf(txtsoluong.getText()) ;
+      soluong-=1;
+       if(soluong<=0){XDialog.alert("số lượng không thể thấp hơn");}else{
+      txtsoluong.setText(String.valueOf(soluong));
+        thaysoluong(soluong);}}else{XDialog.alert("vui lòng chọn sản phẩm để sửa số lượng");}
+    }//GEN-LAST:event_btgiamActionPerformed
+
+    private void bttangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttangActionPerformed
+        // TODO add your handling code here:
+         if(!txtsoluong.getText().isEmpty()){
+        soluong=  Integer.valueOf(txtsoluong.getText()) ;
+        soluong+=1;
+        if(soluong<=0){XDialog.alert("số lượng không thể thấp hơn");}else{
+      txtsoluong.setText(String.valueOf(soluong));
+        thaysoluong(soluong);}}else{XDialog.alert("vui lòng chọn sản phẩm để sửa số lượng");}
+    }//GEN-LAST:event_bttangActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        xoa();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btgiam;
+    private javax.swing.JButton bttang;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable tablecart;
+    private javax.swing.JTextPane txtsoluong;
+    private javax.swing.JTextPane txttongtien;
+    // End of variables declaration//GEN-END:variables
+}

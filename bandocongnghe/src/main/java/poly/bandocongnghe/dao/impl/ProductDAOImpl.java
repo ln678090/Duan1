@@ -14,6 +14,7 @@ public class ProductDAOImpl implements ProductDAO {
     String deleteSql = "DELETE FROM Products WHERE Id=?";
     String findAllSql = "SELECT * FROM Products";
     String findByIdSql = "SELECT * FROM Products WHERE Id=?";
+    String findBynameSql = "SELECT * FROM Products WHERE Id=?";
 
     @Override
     public Product create(Product entity) {

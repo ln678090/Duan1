@@ -26,21 +26,7 @@ CREATE TABLE User_details (
     FOREIGN KEY (username) REFERENCES Users(username)
 );
 
-INSERT INTO Users (Username, Password, Roles, Otp, Email,Status) VALUES
-(N'ln678090', N'123456', 1, null, N'ln678090@gmail.com',1),
-(N'lamkodeptrai2', N'123456', 2, null, N'lamkodeptrai2@gmail.com',1),
-(N'hi8675793', N'123456', 3,null, N'hi8675793@gmail.com',1),
-(N'phamthid', N'123abc', 3, null, N'hi8675793@gmail.com',1),
-(N'vuquang', N'zxcvbn', 3,null, N'hi8675793@gmail.com',0);
 
-
-
-INSERT INTO User_details (Fullname, Phone, Gender, Address, username, Dob, Photo) VALUES
-(N'Nguyễn Phúc Lâm', N'0901234001', N'Nam', N'Hà Nội', 'ln678090', '1990-01-01', N'lam.jpg'),
-(N'Lâm dẹp zai', N'0901234002', N'Nữ', N'Hải Phòng', 'lamkodeptrai2', '1995-02-02', N'lam2.jpg'),
-(N'Trần Văn C', N'0901234003', N'Nam', N'Đà Nẵng', 'hi8675793', '1992-03-03', N'chi.jpg'),
-(N'Phạm Thị D', N'0901234004', N'Nữ', N'Nghệ An', 'phamthid', '1993-04-04', N'muahang.jpg'),
-(N'Vũ Quang', N'0901234005', N'Nam', N'Hải Dương', 'vuquang', '1991-05-05', N'muahang.jpg');
 
 create table Categories(
 Id varchar(50) primary key,
@@ -69,7 +55,7 @@ FOREIGN KEY (brand_id) REFERENCES Brands(Id),
 
 
 create table Products_detail(
-Productsdetail_id INT PRIMARY KEY IDENTITY(1000,1),
+Productsdetail_id INT PRIMARY KEY IDENTITY(2000,1),
 Product_id varchar(50),
 description nvarchar(max),
 Icon nvarchar(50),
@@ -77,13 +63,79 @@ FOREIGN KEY (Product_id) REFERENCES Products(Id),
 );
 
 create table Inventory (
-Id INT PRIMARY KEY IDENTITY(1000,1),
+Id INT PRIMARY KEY IDENTITY(3000,1),
 Product_id varchar(50),
 FOREIGN KEY (Product_id) REFERENCES Products(Id),
 Quantity  int ,
 Unit NVARCHAR(20),
 LastUpdated datetime 
 );
+create table  Product_Interested_Users (
+Id INT PRIMARY KEY IDENTITY(8000,1),
+Username NVARCHAR(50),
+FOREIGN KEY (username) REFERENCES Users(username),
+Product_id varchar(50),
+FOREIGN KEY (Product_id) REFERENCES Products(Id),
+RegisteredAt DATETIME DEFAULT GETDATE(),
+Status int default 0 --0 :chờ hàng ,1 đã thông báo có hàng 
+);
+
+Create table Carts(
+Id int primary key IDENTITY(4000,1),
+Username nvarchar(50),
+Createat datetime default getdate(),
+Status int default 0,--trạng thái giỏ hàng 0  đang dùng; 1  đã thanh toán
+FOREIGN KEY (Username) REFERENCES Users(Username)
+);
+create table Cart_items(
+Id INT PRIMARY KEY IDENTITY(5000,1),
+Status int ,
+/*
+0	Đã thêm vào giỏ  chưa chọn thanh toán
+1	Đã chọn để thanh toán
+2	Đã thanh toán thành công
+3	Đã huỷ (người dùng bỏ qua hoặc hệ thống tự huỷ nếu quá hạn) */
+CartId int ,
+FOREIGN KEY (CartId) REFERENCES Carts(Id),
+Product_id varchar(50),
+FOREIGN KEY (Product_id) REFERENCES Products(Id),
+Quantity  int ,
+UnitPrice money
+);
+
+create table Orders(
+Id INT PRIMARY KEY IDENTITY(6000,1),
+CartId int ,
+FOREIGN KEY (CartId) REFERENCES Carts(Id),
+OrderDate datetime default getdate(),
+TotalAmount  money,
+Status varchar(50)
+);
+create table Order_items(
+Id INT PRIMARY KEY IDENTITY(7000,1),
+OrderId int ,
+FOREIGN KEY (OrderId) REFERENCES Orders(Id),
+Product_id varchar(50),
+FOREIGN KEY (Product_id) REFERENCES Products(Id),
+Quantity  int ,
+UnitPrice money
+);
+
+INSERT INTO Users (Username, Password, Roles, Otp, Email,Status) VALUES
+(N'ln678090', N'123456', 1, null, N'ln678090@gmail.com',1),
+(N'lamkodeptrai2', N'123456', 2, null, N'lamkodeptrai2@gmail.com',1),
+(N'hi8675793', N'123456', 3,null, N'hi8675793@gmail.com',1),
+(N'phamthid', N'123abc', 3, null, N'hi8675793@gmail.com',1),
+(N'vuquang', N'zxcvbn', 3,null, N'hi8675793@gmail.com',0);
+
+
+
+INSERT INTO User_details (Fullname, Phone, Gender, Address, username, Dob, Photo) VALUES
+(N'Nguyễn Phúc Lâm', N'0901234001', N'Nam', N'Hà Nội', 'ln678090', '1990-01-01', N'lam.jpg'),
+(N'Lâm dẹp zai', N'0901234002', N'Nữ', N'Hải Phòng', 'lamkodeptrai2', '1995-02-02', N'lam2.jpg'),
+(N'Trần Văn C', N'0901234003', N'Nam', N'Đà Nẵng', 'hi8675793', '1992-03-03', N'chi.jpg'),
+(N'Phạm Thị D', N'0901234004', N'Nữ', N'Nghệ An', 'phamthid', '1993-04-04', N'muahang.jpg'),
+(N'Vũ Quang', N'0901234005', N'Nam', N'Hải Dương', 'vuquang', '1991-05-05', N'muahang.jpg');
 
 INSERT INTO Categories (Id, Name)
 VALUES
@@ -210,7 +262,7 @@ INSERT INTO Inventory (Product_id, Quantity, Unit, LastUpdated) VALUES
 
 -- Đồng hồ (2 sản phẩm × 10 cái)
 ('DH01', 10, N'chiếc', GETDATE()),
-('DH02', 10, N'chiếc', GETDATE()),
+('DH02', 0, N'chiếc', GETDATE()),
 
 -- Tablet (2 sản phẩm × 10 cái)
 ('TB01', 10, N'chiếc', GETDATE()),

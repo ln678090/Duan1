@@ -50,8 +50,8 @@ public class InventoryDAOImpl implements InventoryDAO {
     
 
     @Override
-    public List<Inventory> findByProductId(String productId) {
-        return XQuery.getBeanList(Inventory.class, findByProductSql, productId);
+    public Inventory findByProductId(String productId) {
+        return XQuery.getSingleBean(Inventory.class, findByProductSql, productId);
     }
 
     @Override

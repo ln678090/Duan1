@@ -19,7 +19,7 @@ public class XAuth {
     //giữa các chức năng trong ứng dụng 
     
       public static User user = User.builder() 
-            .Username("user1@gmail.com") 
+            .Username("ln678090") 
             .Password("123") 
             .Roles(0) 
             .Status(0) 

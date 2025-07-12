@@ -4,13 +4,15 @@
  */
 package poly.bandocongnghe.dao;
 
-import java.util.List;
-import poly.bandocongnghe.entity.Inventory;
+import poly.bandocongnghe.entity.Cart;
 
 /**
  *
  * @author lam
  */
-public interface InventoryDAO extends CrudDAO<Inventory, String>{
-    public Inventory findByProductId(String productId);
+public interface CartDAO extends CrudDAO<Cart, String>{
+    void updateStatus(int cartId, int status);
+    Cart findActiveCartByUsername(String username);
+    Cart findById(int id) ;
+//    Cart find_id_moi();
 }
